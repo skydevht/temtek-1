@@ -31,6 +31,38 @@ class User extends Model implements JWTSubject, AuthenticatableContract, Authori
         'password',
     ];
 
+    /*
+     * Link to all terms posted by this users
+     *
+     */
+    public function terms() {
+        return $this->hasMany('App\Models\Term', 'author_id');
+    }
+
+    /*
+     * Link to all translations proposed by this users
+     *
+     */
+    public function translations() {
+        return $this->hasMany('App\Models\Translation', 'author_id');
+    }
+
+    /*
+     * Link to all the translations of terms' definitions proposed by this user
+     *
+     */
+    public function def_translations() {
+        return $this->hasMany('App\Models\Definition', 'author_id');
+    }
+
+    /*
+     * Link to all the translation voted by the user
+     *
+     */
+    public function translation_voted() {
+        return $this->belongsToMany('App\Models\Translation', 'votes', 'user_id', 'trans_id');
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
